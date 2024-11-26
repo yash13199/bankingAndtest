@@ -8,15 +8,9 @@
 import XCTest
 @testable import bankingAndtest
 
-//struct Errors {
-//    
-//     var invalidAmount : String
-//    invalidAmount = "Withdrawal amount must be positive"
-//    
-////    func invalidAount() -> Never {
-////        return "Withdrawal amount must be positive"
-////    }
-//}
+var errorHandler: ((String) -> Void) = { message in
+    fatalError(message)
+}
 
 final class bankingAndtestTests: XCTestCase {
     var account: Account?
@@ -53,6 +47,16 @@ final class bankingAndtestTests: XCTestCase {
 //        )
 ////        
 //    }
+    
+    func testDepositNegativeAmount() {
+        var capturedMessage: String?
+        errorHandler = { message in
+            capturedMessage = message
+        }
+        
+        account?.deposit(amount: -100)
+        XCTAssertEqual(capturedMessage, "Deposit amount must be positive")
+    }
     
     
     
